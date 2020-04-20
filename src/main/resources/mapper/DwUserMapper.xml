@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xin.cymall.dao.DwUserDao">
+
+    <resultMap type="xin.cymall.entity.DwUser" id="SysUserResult">
+        <id property="id" column="Id"/>
+        <result property="userLx" column="Userlx"/>
+        <result property="dbPointCode" column="DbPointCode"/>
+        <result property="dwzh" column="Dwzh"/>
+        <result property="dwmc" column="Dwmc"/>
+        <result property="TYXYDM" column="TYXYDM"/>
+        <result property="userName" column="UserName"/>
+        <result property="password" column="Password"/>
+        <result property="userRole" column="UserRole"/>
+        <result property="dwjbr" column="DwJbr"/>
+        <result property="isno" column="Isno"/>
+        <result property="salt" column="salt"/>
+        <result property="qyrq" column="qyrq"/>
+        <result property="ywwd" column="ywwd"/>
+    </resultMap>
+
+    <select id="selectByUserName" parameterType="String" resultMap="SysUserResult">
+        select * from dwuser
+        where UserName = #{userName}
+    </select>
+
+
+
+</mapper>

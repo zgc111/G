@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="xin.cymall.dao.GJcDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="xin.cymall.entity.GJc" id="gJcMap">
+        <result property="id" column="id"/>
+        <result property="ywlsh" column="ywlsh"/>
+        <result property="status" column="status"/>
+        <result property="dwzh" column="dwzh"/>
+        <result property="money" column="money"/>
+        <result property="jcdate" column="jcdate"/>
+        <result property="jcrs" column="jcrs"/>
+    </resultMap>
+
+	<select id="get" resultType="xin.cymall.entity.GJc">
+		select * from g_jc where id = #{value}
+	</select>
+
+	<select id="getList" resultType="xin.cymall.entity.GJc">
+		select * from g_jc t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from g_jc t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="id != null and id != ''"> and t.id = #{id} </if>
+    		<if test="idVague != null and idVague != ''"> and t.id like concat('%',#{idVague},'%') </if>
+            <if test="ywlsh != null and ywlsh != ''"> and t.ywlsh = #{ywlsh} </if>
+    		<if test="ywlshVague != null and ywlshVague != ''"> and t.ywlsh like concat('%',#{ywlshVague},'%') </if>
+            <if test="status != null and status != ''"> and t.status = #{status} </if>
+    		<if test="statusVague != null and statusVague != ''"> and t.status like concat('%',#{statusVague},'%') </if>
+            <if test="dwzh != null and dwzh != ''"> and t.dwzh = #{dwzh} </if>
+    		<if test="dwzhVague != null and dwzhVague != ''"> and t.dwzh like concat('%',#{dwzhVague},'%') </if>
+            <if test="money != null and money != ''"> and t.money = #{money} </if>
+    		<if test="moneyVague != null and moneyVague != ''"> and t.money like concat('%',#{moneyVague},'%') </if>
+            <if test="jcdate != null and jcdate != ''"> and t.jcdate = #{jcdate} </if>
+    		<if test="jcdateVague != null and jcdateVague != ''"> and t.jcdate like concat('%',#{jcdateVague},'%') </if>
+            <if test="jcrs != null and jcrs != ''"> and t.jcrs = #{jcrs} </if>
+    		<if test="jcrsVague != null and jcrsVague != ''"> and t.jcrs like concat('%',#{jcrsVague},'%') </if>
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="xin.cymall.entity.GJc" useGeneratedKeys="true" keyProperty="id">
+		insert into g_jc
+		(
+			`ywlsh`, 
+			`status`, 
+			`dwzh`, 
+			`money`, 
+			`jcdate`, 
+			`jcrs`
+		)
+		values
+		(
+			#{ywlsh}, 
+			#{status}, 
+			#{dwzh}, 
+			#{money}, 
+			#{jcdate}, 
+			#{jcrs}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="xin.cymall.entity.GJc">
+		update g_jc 
+		<set>
+			<if test="ywlsh != null">`ywlsh` = #{ywlsh}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="dwzh != null">`dwzh` = #{dwzh}, </if>
+			<if test="money != null">`money` = #{money}, </if>
+			<if test="jcdate != null">`jcdate` = #{jcdate}, </if>
+			<if test="jcrs != null">`jcrs` = #{jcrs}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from g_jc where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from g_jc where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
